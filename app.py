@@ -20,6 +20,31 @@ from sklearn.metrics import mean_absolute_error, mean_squared_error
 
 st.set_page_config(page_title="Sales Forecasting & Demand Intelligence", layout="wide")
 
+# Make the sidebar navigation menu bigger and easier to read
+st.markdown("""
+<style>
+/* Sidebar title */
+section[data-testid="stSidebar"] h1 {
+    font-size: 30px !important;
+}
+/* "Navigate" label above the radio menu */
+section[data-testid="stSidebar"] .stRadio > label {
+    font-size: 20px !important;
+    font-weight: 700 !important;
+}
+/* Each menu option text */
+section[data-testid="stSidebar"] .stRadio [role="radiogroup"] label p {
+    font-size: 20px !important;
+    padding: 6px 0px !important;
+}
+/* Radio button circle size */
+section[data-testid="stSidebar"] .stRadio [role="radiogroup"] label div:first-child {
+    transform: scale(1.3);
+    margin-right: 8px;
+}
+</style>
+""", unsafe_allow_html=True)
+
 SARIMA_ORDER = (1, 1, 1)
 SARIMA_SEASONAL_ORDER = (1, 1, 1, 12)
 HORIZON_MAX = 3
@@ -31,8 +56,8 @@ HORIZON_MAX = 3
 @st.cache_data
 def load_data():
     df = pd.read_csv("train.csv")
-    df["Order Date"] = pd.to_datetime(df["Order Date"], format="%m/%d/%Y")
-    df["Ship Date"] = pd.to_datetime(df["Ship Date"], format="%m/%d/%Y")
+    df["Order Date"] = pd.to_datetime(df["Order Date"], format="%d/%m/%Y")
+    df["Ship Date"] = pd.to_datetime(df["Ship Date"], format="%d/%m/%Y")
     df = df.drop_duplicates().reset_index(drop=True)
     df["Year"] = df["Order Date"].dt.year
     df["Month"] = df["Order Date"].dt.month
